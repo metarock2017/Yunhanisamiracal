@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" build-on-make="true" name="WeChat:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/WeChat_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="WeChat/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="WeChat" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/../../SampleCode/SampleCode/Java/aes-jre1.6.jar" />
+          <element id="file-copy" path="J:/gson-2.8.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../../SampleCode/SampleCode/Java/commons-codec-1.9.jar" />
+          <element id="file-copy" path="J:/jedis-2.9.0.jar" />
+          <element id="file-copy" path="J:/org.json.jar" />
+          <element id="file-copy" path="J:/mysql-connector-java-5.1.42-bin.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
