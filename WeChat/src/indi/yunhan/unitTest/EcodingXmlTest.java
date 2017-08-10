@@ -15,7 +15,7 @@ public class EcodingXmlTest {
                 "<MsgId>6451880102854462831</MsgId>\n" +
                 "</xml>");
 
-        textMessage.getKeyValueFromClearText();
+        textMessage.setKeyValue(textMessage.getClearText());
         System.out.println(textMessage.toString());
         textMessage.exchangeUser();
         System.out.println(textMessage.toString());

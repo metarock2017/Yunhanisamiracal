@@ -5,8 +5,6 @@ package indi.yunhan.model.event;
  */
 public class ClickEvent extends EventProto {
 
-
-
     public ClickEvent(){
 
     }

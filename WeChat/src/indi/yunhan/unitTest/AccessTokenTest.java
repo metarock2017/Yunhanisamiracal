@@ -14,8 +14,6 @@ public class AccessTokenTest {
         return token;
     }
     public static void main(String[] args) {
-//        AccessTokenService.setAccessToken(AccessTokenService.getTokenFromCurl());
-
         System.out.println(AccessTokenService.getAccessToken());
     }
 }

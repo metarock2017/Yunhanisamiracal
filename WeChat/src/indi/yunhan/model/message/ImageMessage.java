@@ -1,17 +1,6 @@
 package indi.yunhan.model.message;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
+import indi.yunhan.model.message.messagehandle.MessageHandle;
 import java.util.Map;
 
 /**
@@ -21,46 +10,78 @@ public class ImageMessage extends MessageProto {
     private String clearText;
     private Map<String, String> keyValue;
 
-    private final String msgTemplate = "<xml><ToUserName><![CDATA[%s]]></ToUserName>\n" +
+    private final String msgTemplate = "<xml>\n" +
+            "<ToUserName><![CDATA[%s]]></ToUserName>\n" +
             "<FromUserName><![CDATA[%s]]></FromUserName>\n" +
             "<CreateTime>%s</CreateTime>\n" +
             "<MsgType><![CDATA[image]]></MsgType>\n" +
-            "<PicUrl><![CDATA[%s]]></PicUrl>\n" +
-            "<MsgId>%s</MsgId>\n" +
+            "<Image>\n" +
             "<MediaId><![CDATA[%s]]></MediaId>\n" +
+            "</Image>\n" +
             "</xml>";
     private String msgXml;
+
+    public String getClearText() {
+        return clearText;
+    }
+
+    public void setClearText(String clearText) {
+        this.clearText = clearText;
+    }
+
+    public Map<String, String> getKeyValue() {
+        return keyValue;
+    }
+
+    public void setKeyValue(Map<String, String> keyValue) {
+        this.keyValue = keyValue;
+    }
+
+    public String getMsgTemplate() {
+        return msgTemplate;
+    }
+
+    public String getMsgXml() {
+        return msgXml;
+    }
+
+    public void setMsgXml(String msgXml) {
+        this.msgXml = msgXml;
+    }
 
     public ImageMessage(String clearText) {
         this.clearText = clearText;
         this.msgType = "image";
     }
 
-    public ImageMessage(String toUserName, String fromUserName, String picUrl, String msgId, String mediaId) {
+    public ImageMessage(String toUserName, String fromUserName, String mediaId) {
         this.msgXml = String.format(
                 msgTemplate,
                 toUserName,
                 fromUserName,
                 System.currentTimeMillis() / 1000 + "",
-                picUrl,
-                msgId,
                 mediaId);
     }
 
-    public boolean hasDate() {
-        if (this.keyValue.size() >= 1 && !(this.clearText.equals(""))) {
-            return true;
-        } else {
-            return false;
-        }
+    public void setKeyValue(String clearText) {
+        this.keyValue = MessageHandle.getKeyValueFromClearText(clearText);
     }
 
+    public void exchangeUser() {
+        String toUserName = this.keyValue.get("ToUserName");
+        String fromUserName = this.keyValue.get("FromUserName");
+
+        this.keyValue.put("ToUserName", fromUserName);
+        this.keyValue.put("FromUserName", toUserName);
+    }
+
+    @Override
     public String toString() {
-        if (this.hasDate()) {
-            return this.msgXml;
-        } else {
-            System.out.println("Un Init");
-            return null;
-        }
+        return String.format(
+                this.msgTemplate,
+                this.keyValue.get("ToUserName"),
+                this.keyValue.get("FromUserName"),
+                this.keyValue.get("CreateTime"),
+                this.keyValue.get("MediaId"));
     }
 }

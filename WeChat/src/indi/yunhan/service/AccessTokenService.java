@@ -40,20 +40,17 @@ public class AccessTokenService {
 
     public static String getAccessToken() {
 
-        String token = jedis.get("access_token");
+        synchronized (AccessTokenService.class) {
+            String token = jedis.get("access_token");
 
-        if (token == null || token.equals("null") || token.equals("")) {
-            System.out.println("access_token is out of time");
+            if (token == null || token.equals("null") || token.equals("")) {
+                System.out.println("AccessToken was out of time");
 
-            return getTokenFromCurl();
-        } else {
-            System.out.println(jedis.get("access_token"));
-            return token;
+                return getTokenFromCurl();
+            } else {
+                System.out.println(jedis.get("access_token"));
+                return token;
+            }
         }
     }
-
-    public static void main(String[] args) {
-
-    }
-
 }

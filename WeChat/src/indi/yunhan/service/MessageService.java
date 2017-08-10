@@ -1,5 +1,6 @@
 package indi.yunhan.service;
 
+import indi.yunhan.model.message.ImageMessage;
 import indi.yunhan.model.message.TextMessage;
 import indi.yunhan.util.Encoding;
 import org.w3c.dom.Document;
@@ -48,14 +49,27 @@ public class MessageService {
             /*
             * 初始化文本消息对象
             * */
-            System.out.println(clearText);
-            System.out.println(getTypeOfMsg(clearText));
+//            System.out.println(clearText);
+//            System.out.println(getTypeOfMsg(clearText));
 
-            TextMessage textMessage = new TextMessage(clearText);
-            textMessage.getKeyValueFromClearText();
-            textMessage.exchangeUser();
+            if (getTypeOfMsg(clearText).equals("text")) {
+                TextMessage textMessage = new TextMessage(clearText);
+                textMessage.setKeyValue(clearText);
+                textMessage.exchangeUser();
 
-            return Encoding.encrypt(textMessage.toString(), nonce);
+                return Encoding.encrypt(textMessage.toString(), nonce);
+
+            } else if (getTypeOfMsg(clearText).equals("image")) {
+                ImageMessage imageMessage = new ImageMessage(clearText);
+                imageMessage.setKeyValue(clearText);
+                imageMessage.exchangeUser();
+
+                System.out.println(imageMessage.toString());
+
+                return Encoding.encrypt(imageMessage.toString(), nonce);
+            } else {
+                return null;
+            }
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();

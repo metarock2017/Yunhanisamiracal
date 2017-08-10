@@ -4,9 +4,6 @@ package indi.yunhan.util;
  * Created by asus on 2017/8/6.
  */
 
-import indi.yunhan.service.AccessTokenService;
-import indi.yunhan.unitTest.ButtonToJson;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -25,7 +22,7 @@ public class YhCurl {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        //默认值我GET
+        //默认值GET
         con.setRequestMethod("GET");
 
         //添加请求头
@@ -88,13 +85,6 @@ public class YhCurl {
 
     }
 
-    public static void main(String[] args) throws Exception {
-
-        YhCurl http = new YhCurl();
-
-        System.out.println("\nTesting 2 - Send Http POST request");
-        http.sendPost("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" +
-                AccessTokenService.getAccessToken(), new ButtonToJson().ButtonStringTest());
-    }
+    //
 
 }

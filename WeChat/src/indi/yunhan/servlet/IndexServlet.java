@@ -17,9 +17,6 @@ import java.util.Arrays;
  */
 @WebServlet(name = "/yunhan", value = "/")
 public class IndexServlet extends javax.servlet.http.HttpServlet {
-    public static void main(String[] args) {
-
-    }
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
         // 分发请求

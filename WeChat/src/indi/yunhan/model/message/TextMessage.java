@@ -1,17 +1,7 @@
 package indi.yunhan.model.message;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import indi.yunhan.model.message.messagehandle.MessageHandle;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,6 +21,34 @@ public class TextMessage extends MessageProto {
             "</xml>";
     private String msgXml;
 
+    public String getClearText() {
+        return clearText;
+    }
+
+    public void setClearText(String clearText) {
+        this.clearText = clearText;
+    }
+
+    public Map<String, String> getKeyValue() {
+        return keyValue;
+    }
+
+    public void setKeyValue(Map<String, String> keyValue) {
+        this.keyValue = keyValue;
+    }
+
+    public String getMsgTemplate() {
+        return msgTemplate;
+    }
+
+    public String getMsgXml() {
+        return msgXml;
+    }
+
+    public void setMsgXml(String msgXml) {
+        this.msgXml = msgXml;
+    }
+
     public TextMessage(String clearText) {
         this.clearText = clearText;
         this.msgType = "test";
@@ -47,38 +65,8 @@ public class TextMessage extends MessageProto {
         this.msgType = "text";
     }
 
-    public Map<String, String> getKeyValueFromClearText() {
-        Map<String, String> map = new HashMap<>();
-
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-
-            StringReader stringReader = new StringReader(this.clearText);
-            InputSource inputSource = new InputSource(stringReader);
-
-            Document document = db.parse(inputSource);
-            Element element = document.getDocumentElement();
-
-            NodeList nodeList = element.getChildNodes();
-
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                if (nodeList.item(i).getNodeName().equals("#text")) {
-                    continue;
-                } else {
-                    map.put(nodeList.item(i).getNodeName(), nodeList.item(i).getTextContent());
-                }
-            }
-            this.keyValue = map;
-            return map;
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public void setKeyValue(String clearText) {
+        this.keyValue = MessageHandle.getKeyValueFromClearText(clearText);
     }
 
     public void exchangeUser() {
@@ -87,14 +75,6 @@ public class TextMessage extends MessageProto {
 
         this.keyValue.put("ToUserName", fromUserName);
         this.keyValue.put("FromUserName", toUserName);
-    }
-
-    public boolean hasDate() {
-        if (this.keyValue.size() >= 1 && !(this.clearText.equals(""))) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
