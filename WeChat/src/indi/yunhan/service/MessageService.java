@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,65 +20,72 @@ import java.io.*;
  */
 public class MessageService {
 
+    public static String encrypt = null;
+
+    public static String timestamp;
+    public static String nonce;
+    public static String msgSignature;
+
     public String replyMsg(javax.servlet.http.HttpServletRequest request) {
-        InputStream inputStream = null;
-        try {
-            inputStream = request.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        String timestamp = request.getParameter("timestamp");
-        String nonce = request.getParameter("nonce");
-        String msgSignature = request.getParameter("msg_signature");
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
+//        InputStream inputStream = null;
+//        try {
+//            inputStream = request.getInputStream();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String timestamp = request.getParameter("timestamp");
+//        String nonce = request.getParameter("nonce");
+//        String msgSignature = request.getParameter("msg_signature");
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = null;
+//
+//        try {
+//            builder = factory.newDocumentBuilder();
+//            Document reqDocument = builder.parse(inputStream);
+//            Element reqRootNode = reqDocument.getDocumentElement();
+//            NodeList allNode = reqRootNode.getChildNodes();
+//
+//            String tUserName = allNode.item(1).getTextContent();
+//            String encrypt = allNode.item(3).getTextContent();
+//
+//            String format = "<xml><ToUserName><![CDATA[%s]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
+//            String fromXML = String.format(format, tUserName, encrypt);
+//            String clearText = Encoding.decrypt(msgSignature, timestamp, nonce, fromXML);
+//
+//            /*
+//            * 初始化文本消息对象
+//            * */
+////            System.out.println(clearText);
+////            System.out.println(getTypeOfMsg(clearText));
+//
+//            if (getTypeOfMsg(clearText).equals("text")) {
+//                TextMessage textMessage = new TextMessage(clearText);
+//                textMessage.setKeyValue(clearText);
+//                textMessage.exchangeUser();
+//
+//                return Encoding.encrypt(textMessage.toString(), nonce);
+//
+//            } else if (getTypeOfMsg(clearText).equals("image")) {
+//                ImageMessage imageMessage = new ImageMessage(clearText);
+//                imageMessage.setKeyValue(clearText);
+//                imageMessage.exchangeUser();
+//
+//                System.out.println(imageMessage.toString());
+//
+//                return Encoding.encrypt(imageMessage.toString(), nonce);
+//            } else {
+//                return null;
+//            }
 
-        try {
-            builder = factory.newDocumentBuilder();
-            Document reqDocument = builder.parse(inputStream);
-            Element reqRootNode = reqDocument.getDocumentElement();
-            NodeList allNode = reqRootNode.getChildNodes();
-
-            String tUserName = allNode.item(1).getTextContent();
-            String encrypt = allNode.item(3).getTextContent();
-
-            String format = "<xml><ToUserName><![CDATA[%s]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
-            String fromXML = String.format(format, tUserName, encrypt);
-            String clearText = Encoding.decrypt(msgSignature, timestamp, nonce, fromXML);
-
-            /*
-            * 初始化文本消息对象
-            * */
-//            System.out.println(clearText);
-//            System.out.println(getTypeOfMsg(clearText));
-
-            if (getTypeOfMsg(clearText).equals("text")) {
-                TextMessage textMessage = new TextMessage(clearText);
-                textMessage.setKeyValue(clearText);
-                textMessage.exchangeUser();
-
-                return Encoding.encrypt(textMessage.toString(), nonce);
-
-            } else if (getTypeOfMsg(clearText).equals("image")) {
-                ImageMessage imageMessage = new ImageMessage(clearText);
-                imageMessage.setKeyValue(clearText);
-                imageMessage.exchangeUser();
-
-                System.out.println(imageMessage.toString());
-
-                return Encoding.encrypt(imageMessage.toString(), nonce);
-            } else {
-                return null;
-            }
-
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (ParserConfigurationException e) {
+//            e.printStackTrace();
+//        } catch (SAXException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return "error!";
     }
@@ -104,5 +112,14 @@ public class MessageService {
             e.printStackTrace();
         }
         return "error";
+    }
+
+    public boolean isEncryptMsg(HttpServletRequest request){
+        encrypt = request.getParameter("encrypt_type");
+        System.out.println(encrypt);
+        if("aes".equals(encrypt)){
+            return true;
+        }
+        return false;
     }
 }

@@ -17,8 +17,8 @@ public class AccessTokenService {
     public static String getTokenFromCurl() {
 
         String accessTokenJson = CurlUtil.getContent("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" +
-                Const.AppId + "&secret=" +
-                Const.AppSecret, null, "GET", 1);
+                Const.TestAppId + "&secret=" +
+                Const.TestAppSecret, null, "GET", 1);
 
 //        System.out.println(accessTokenJson);
 
@@ -52,5 +52,9 @@ public class AccessTokenService {
                 return token;
             }
         }
+    }
+
+    public static void clearAccessToken(){
+        jedis.set("access_token", "");
     }
 }

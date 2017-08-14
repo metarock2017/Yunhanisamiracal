@@ -15,17 +15,14 @@ import java.util.Arrays;
 /**
  * Created by asus on 2017/8/3.
  */
-@WebServlet(name = "/yunhan", value = "/")
+@WebServlet(name = "index", value = "/yunhan")
 public class IndexServlet extends javax.servlet.http.HttpServlet {
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
         // 分发请求
         MessageService messageTestService = new MessageService();
-
         String message = null;
-
         message = messageTestService.replyMsg(request);
-
         response.getWriter().print(message);
 
     }

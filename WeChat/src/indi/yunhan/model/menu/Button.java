@@ -84,15 +84,14 @@ public class Button {
         this.key = key;
     }
 
-    public Button(boolean boo, String type, String name, String key, String url, String appId, String pagePath) {
+    public Button(boolean boo, String type, String name, String key, String url) {
         if (boo) {
             sub_button = new ArrayList<>();
         }
         this.type = type;
         this.name = name;
-        this.key = key;
-        this.url = url;
-        this.appId = appId;
-        this.pagePath = pagePath;
+        if (key.equals("url")){
+            this.url = url;
+        }
     }
 }

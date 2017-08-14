@@ -9,7 +9,7 @@ import java.sql.*;
 public class DBConnection {
 
     private String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private String dbAddress = "jdbc:mysql://localhost:3306/java_kaoqin?autoReconnect=true&useSSL=false";
+    private String dbAddress = "jdbc:mysql://localhost:3306/wechat?autoReconnect=true&useSSL=false";
 
     private String userName = "admin";
     private String passWord = "admin";
@@ -20,7 +20,6 @@ public class DBConnection {
     public DBConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("connect...");
             connection = DriverManager.getConnection(dbAddress, userName, passWord);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +63,7 @@ public class DBConnection {
 
     public ResultSet excuteSqlWithResult(String sql){
         try {
-            this.statement = connection.createStatement();
+            statement = connection.createStatement();
 
             ResultSet rs = statement.executeQuery(sql);
 
