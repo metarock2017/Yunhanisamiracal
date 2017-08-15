@@ -14,16 +14,16 @@ public class ButtonToJson {
 
         ButtonContainer buttonContainer = new ButtonContainer();
 
-        Button button1 = new Button(true,"click","游戏","non");
-        Button button2 = new Button(false,"view","谁是卧底","url","http://ghan.s1.natapp.link/undercover/index.html");
-        Button button3 = new Button(false,"view","狼人杀","url","http://ghan.s1.natapp.link/undercover/index.html");
+        Button undercover = new Button(true,"view","谁是卧底","non");
+        Button create = new Button(false,"view","创建房间","url","http://ghan.s1.natapp.link/undercover/gameview/create.html");
+        Button join = new Button(false,"view","加入游戏","url","http://ghan.s1.natapp.link/undercover/gameview/join.html");
+        Button me = new Button(false,"view","小军涵的主页","url","http://www.yunhan.me/");
 
-        Button button4 = new Button(false,"view","恽涵","url","http://www.yunhan.me/");
+        undercover.getSub_button().add(create);
+        undercover.getSub_button().add(join);
 
-        button1.getSub_button().add(button2);
-        button1.getSub_button().add(button3);
-        buttonContainer.add(button1);
-        buttonContainer.add(button4);
+        buttonContainer.add(undercover);
+        buttonContainer.add(me);
 
 
         String s = gson.toJson(buttonContainer);

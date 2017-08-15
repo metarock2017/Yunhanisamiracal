@@ -17,6 +17,9 @@ public class GameRoomRepository extends RepositoryProto {
     private DBConnection dbConnection;
     private Gson gson = new Gson();
 
+    public String noRoomReturn = "{\"playerNum\":0,\"roomId\":0,\"playerWord\":\"房间不存在\",\"playerChar\":\"emm\"}";
+    public String fullRoomReturn = "{\"playerNum\":0,\"roomId\":0,\"playerWord\":\"房间已满\",\"playerChar\":\"emm\"}";
+
     public DBConnection getDbConnection() {
         dbConnection = new DBConnection();
         return dbConnection;
@@ -135,19 +138,59 @@ public class GameRoomRepository extends RepositoryProto {
         return null;
     }
 
+    public String createRoomUnique(String word_one, String word_two, int max_num) {
+
+        String setWordSql = "INSERT INTO words (word_one, word_two) VALUES('" + word_one + "','" + word_two + "')";
+        String getSql = "SELECT * FROM words WHERE word_one='" + word_one + "' AND word_two='" + word_two + "'";
+        int word_id;
+        boolean flag = getDbConnection().excuteSqlWithoutResult(setWordSql);
+        if (flag){
+            ResultSet rs1 = getDbConnection().excuteSqlWithResult(getSql);
+            try {
+                rs1.first();
+                word_id = rs1.getInt("id");
+
+                String md5 = getMD5(System.currentTimeMillis() + "");
+                String setRoomSql = "INSERT INTO rooms (max_num,word_id,md5) VALUES ('" + max_num + "','" + word_id + "','" + md5 + "')";
+
+                boolean roomFlag = getDbConnection().excuteSqlWithoutResult(setRoomSql);
+
+                if (roomFlag){
+                    String getRoomSql = "SELECT * FROM rooms WHERE md5='" + md5 + "'";
+                    ResultSet rs2 = getDbConnection().excuteSqlWithResult(getRoomSql);
+
+                    rs2.first();
+
+                    GameRoom gameRoom = new GameRoom(rs2);
+                    gameRoom.setWord(getWordNameById(word_id));
+                    String gameRoomJson = gson.toJson(gameRoom);
+
+                    return gameRoomJson;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public boolean hasUndercover(int roomId) {
         String getSql = "SELECT undercover FROM rooms WHERE id='" + roomId + "'";
         ResultSet rs = getDbConnection().excuteSqlWithResult(getSql);
 
-        try {
-            rs.first();
-            if (rs.getInt("undercover") > 0) {
-                return true;
-            } else {
-                return false;
+        if (rs == null) {
+            return false;
+        } else {
+            try {
+                rs.first();
+                if (rs.getInt("undercover") > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return false;
     }
@@ -159,8 +202,6 @@ public class GameRoomRepository extends RepositoryProto {
         try {
             rs.first();
             GameRoom gameRoom = new GameRoom(rs);
-
-            // return room info
 
             return gson.toJson(gameRoom);
         } catch (SQLException e) {
@@ -195,6 +236,23 @@ public class GameRoomRepository extends RepositoryProto {
         return false;
     }
 
+    public boolean isRoomExist(int roomId) {
+        String getSql = "SELECT * FROM rooms WHERE id='" + roomId + "'";
+        ResultSet rs = getDbConnection().excuteSqlWithResult(getSql);
+
+        try {
+            rs.first();
+            if (!(rs.getRow() > 0)) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public int undercoverRate(int roomId) {
         String getSql = "SELECT * FROM rooms WHERE id='" + roomId + "'";
         ResultSet rs = getDbConnection().excuteSqlWithResult(getSql);
@@ -215,30 +273,40 @@ public class GameRoomRepository extends RepositoryProto {
         Random random = new Random(System.currentTimeMillis());
         int randomRate = random.nextInt(100) + 1 + undercoverRate(roomId);
 
+        boolean existFlag = isRoomExist(roomId);
         boolean fullFlag = isRoomFull(roomId);
         boolean hasUndercoverFlag = hasUndercover(roomId);
 
-        if (!fullFlag) {
-            if (!hasUndercoverFlag) {
-                if (randomRate >= 90) {
-                    getDbConnection().excuteSqlWithoutResult(addPlayerSql);
-                    getDbConnection().excuteSqlWithoutResult(addUndercoverSql);
+        if (existFlag) {
+            if (!fullFlag) {
+                if (!hasUndercoverFlag) {
+                    if (randomRate >= 90) {
+                        getDbConnection().excuteSqlWithoutResult(addPlayerSql);
+                        getDbConnection().excuteSqlWithoutResult(addUndercoverSql);
 
-                    // TODO SOMETHING
-                    return getPlayer(getPlayerSum(roomId), roomId, getWordNameBySingle(getWordId(roomId), true), true);
+                        // TODO SOMETHING
+                        return getPlayer(getPlayerSum(roomId), roomId, getWordNameBySingle(getWordId(roomId), true), true);
+                    } else {
+                        getDbConnection().excuteSqlWithoutResult(addPlayerSql);
+                        // TODO SOMETHING
+                        return getPlayer(getPlayerSum(roomId), roomId, getWordNameBySingle(getWordId(roomId), false), false);
+                    }
                 } else {
                     getDbConnection().excuteSqlWithoutResult(addPlayerSql);
                     // TODO SOMETHING
                     return getPlayer(getPlayerSum(roomId), roomId, getWordNameBySingle(getWordId(roomId), false), false);
                 }
             } else {
-                getDbConnection().excuteSqlWithoutResult(addPlayerSql);
-                // TODO SOMETHING
-                return getPlayer(getPlayerSum(roomId), roomId, getWordNameBySingle(getWordId(roomId), false), false);
+                return fullRoomReturn;
             }
         } else {
-            System.out.println("Full");
-            return null;
+            return noRoomReturn;
         }
+    }
+
+    public static void main(String[] args) {
+        GameRoomRepository gameRoomRepository = new GameRoomRepository();
+
+        System.out.println(gameRoomRepository.createRoomUnique("123","1234",10));
     }
 }

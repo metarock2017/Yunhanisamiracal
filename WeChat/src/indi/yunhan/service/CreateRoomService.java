@@ -15,4 +15,8 @@ public class CreateRoomService {
     public String createRoom(int max_num) {
         return this.getGameRoomRepository().createRoom(max_num);
     }
+
+    public String createRoomUnique(String wordOne, String wordTwo, int maxNum) {
+        return this.getGameRoomRepository().createRoomUnique(wordOne,wordTwo,maxNum);
+    }
 }
