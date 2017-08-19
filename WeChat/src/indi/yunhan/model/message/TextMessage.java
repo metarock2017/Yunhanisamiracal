@@ -19,6 +19,7 @@ public class TextMessage extends MessageProto {
             "<Content><![CDATA[%s]]></Content>\n" +
             "<MsgId>%s</MsgId>\n" +
             "</xml>";
+
     private String msgXml;
 
     public String getClearText() {

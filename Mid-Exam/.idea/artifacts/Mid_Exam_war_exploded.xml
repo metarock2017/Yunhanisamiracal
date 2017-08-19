@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Mid-Exam:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Mid_Exam_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Mid-Exam/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Mid-Exam" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="J:/gson-2.8.1.jar" />
+          <element id="file-copy" path="J:/jedis-2.9.0.jar" />
+          <element id="file-copy" path="J:/mysql-connector-java-5.1.42-bin.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
