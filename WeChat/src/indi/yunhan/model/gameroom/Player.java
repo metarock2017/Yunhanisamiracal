@@ -4,8 +4,8 @@ package indi.yunhan.model.gameroom;
  * Created by asus on 2017/8/9.
  */
 public class Player {
-    private int playerNum;
     private int roomId;
+    private int playerNum;
 
     private String playerWord;
     private String playerChar;

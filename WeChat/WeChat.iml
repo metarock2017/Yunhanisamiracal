@@ -61,16 +61,16 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://J:/mysql-connector-java-5.1.42-bin.jar!/" />
+          <root url="jar://J:/org.json.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://J:/org.json.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/mysql-connector-java-5.1.42/mysql-connector-java-5.1.42-bin.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

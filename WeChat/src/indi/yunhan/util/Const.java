@@ -3,6 +3,7 @@ package indi.yunhan.util;
 /**
  * 微信公众号管理界面配置参数
  */
+
 public class Const {
 
     public static final String AppId = "wx1808d3689ddaa3cc";
@@ -12,5 +13,7 @@ public class Const {
 
     public static final String TestAppId = "wxfa46353d9e1dd9b4";
     public static final String TestAppSecret = "5fc0fe2a7b59470ff570407728639324";
+
+    public static final String Secrect = "YuNhAnIsAmIrAcAl";
 
 }

@@ -47,8 +47,7 @@ public class DBConnection {
             statement = connection.createStatement();
             int rows = statement.executeUpdate(sql);
 
-            this.statement.close();
-            connection.close();
+            // 关闭
             if (rows != 0) {
                 return true;
             } else {

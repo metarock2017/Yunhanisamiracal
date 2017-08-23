@@ -1,49 +1,26 @@
 package indi.yunhan.model.gameroom;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Map;
-
 /**
  * Created by asus on 2017/8/9.
  */
 public class GameRoom {
-    private String id;
-    private String word_id;
+    private int openId;
     private String md5;
 
-    private String max_num;
-    private String now_num;
+    private int maxNum;
+    private int nowNum;
 
-    private String word_one;
-    private String word_two;
+    private String wordOne;
+    private String wordTwo;
 
-    private String undercover;
+    private int undercover;
 
-    public String getUndercover() {
-        return undercover;
+    public int getOpenId() {
+        return openId;
     }
 
-    public void setUndercover(String undercover) {
-        this.undercover = undercover;
-    }
-
-    private boolean hasUndercover = false;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getWord_id() {
-        return word_id;
-    }
-
-    public void setWord_id(String word_id) {
-        this.word_id = word_id;
+    public void setOpenId(int openId) {
+        this.openId = openId;
     }
 
     public String getMd5() {
@@ -54,79 +31,107 @@ public class GameRoom {
         this.md5 = md5;
     }
 
-    public String getMax_num() {
-        return max_num;
+    public int getMaxNum() {
+        return maxNum;
     }
 
-    public void setMax_num(String max_num) {
-        this.max_num = max_num;
+    public void setMaxNum(int maxNum) {
+        this.maxNum = maxNum;
     }
 
-    public String getNow_num() {
-        return now_num;
+    public int getNowNum() {
+        return nowNum;
     }
 
-    public void setNow_num(String now_num) {
-        this.now_num = now_num;
+    public void setNowNum(int nowNum) {
+        this.nowNum = nowNum;
     }
 
-    public String getWord_one() {
-        return word_one;
+    public String getWordOne() {
+        return wordOne;
     }
 
-    public void setWord_one(String word_one) {
-        this.word_one = word_one;
+    public void setWordOne(String wordOne) {
+        this.wordOne = wordOne;
     }
 
-    public String getWord_two() {
-        return word_two;
+    public String getWordTwo() {
+        return wordTwo;
     }
 
-    public void setWord_two(String word_two) {
-        this.word_two = word_two;
+    public void setWordTwo(String wordTwo) {
+        this.wordTwo = wordTwo;
     }
 
-    public boolean isHasUndercover() {
-        return hasUndercover;
+    public int getUndercover() {
+        return undercover;
     }
 
-    public void setHasUndercover(boolean hasUndercover) {
-        this.hasUndercover = hasUndercover;
+    public void setUndercover(int undercover) {
+        this.undercover = undercover;
     }
 
-    public GameRoom(String id, String word_id, String md5, String max_num, String now_num) {
-        this.id = id;
-        this.word_id = word_id;
-        this.md5 = md5;
-        this.max_num = max_num;
-        this.now_num = now_num;
+    public GameRoom() {
+
     }
 
-    public GameRoom(ResultSet rs) {
-        try {
-            this.id = rs.getString("id");
-            this.word_id = rs.getString("word_id");
-            this.md5 = rs.getString("md5");
-            this.max_num = rs.getString("max_num");
-            this.now_num = rs.getString("now_num");
-            this.undercover = rs.getString("undercover");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public GameRoom(int openId, String md5, int maxNum, Words words) {
+        this.setOpenId(openId);
+        this.setMd5(md5);
+        this.setMaxNum(maxNum);
+        this.setWord(words);
     }
 
-    public GameRoom(Map<String, String> map) {
-        this.id = map.get("id");
-        this.word_id = map.get("word_id");
-        this.md5 = map.get("md5");
-        this.max_num = map.get("max_num");
-        this.now_num = map.get("now_num");
-        this.undercover = map.get("undercover");
+    @Override
+    public String toString() {
+        return "{" +
+                "openId=" + openId +
+                ", md5='" + md5 + '\'' +
+                ", maxNum=" + maxNum +
+                ", nowNum=" + nowNum +
+                ", wordOne='" + wordOne + '\'' +
+                ", wordTwo='" + wordTwo + '\'' +
+                ", undercover=" + undercover +
+                '}';
     }
 
     public void setWord(String[] words) {
-        this.setWord_one(words[0]);
-        this.setWord_two(words[1]);
+        this.setWordOne(words[0]);
+        this.setWordTwo(words[1]);
+    }
+
+    public void setWord(Words word) {
+        this.setWordOne(word.getWordOne());
+        this.setWordTwo(word.getWordTwo());
+    }
+
+    public void addUndercover() {
+        int now = this.getNowNum();
+        this.setNowNum(now + 1);
+        int nowUndercover = this.getUndercover();
+        this.setUndercover(nowUndercover + 1);
+    }
+
+    public void addCommonPerson() {
+        int now = this.getNowNum();
+        this.setNowNum(now + 1);
+    }
+
+    public static void main(String[] args) {
+        GameRoom gameRoom = new GameRoom();
+        System.out.println(gameRoom.toString());
+
+        gameRoom.addCommonPerson();
+        gameRoom.addCommonPerson();
+        gameRoom.addCommonPerson();
+        gameRoom.addCommonPerson();
+        gameRoom.addCommonPerson();
+
+        gameRoom.addUndercover();
+        gameRoom.addUndercover();
+        gameRoom.addUndercover();
+        gameRoom.addUndercover();
+
+        System.out.println(gameRoom.toString());
     }
 }

@@ -52,10 +52,10 @@ create_quick.addEventListener('click', () => {
         url: 'http://ghan.s1.natapp.link/room/create',
         callback: (res) => {
             let jsonObj = JSON.parse(res);
-            input_one.value = jsonObj.word_one;
-            input_two.value = jsonObj.word_two;
-            input_three.value = jsonObj.max_num;
-            input_four.value = jsonObj.id;
+            input_one.value = jsonObj.wordOne;
+            input_two.value = jsonObj.wordTwo;
+            input_three.value = jsonObj.maxNum;
+            input_four.value = jsonObj.openId;
 
             input_one.style.setProperty("color", "rgba(255,255,255,.7)");
             input_two.style.setProperty("color", "rgba(255,255,255,.7)");
@@ -80,10 +80,10 @@ create_unique.addEventListener('click', () => {
         url: 'http://ghan.s1.natapp.link/room/create/unique',
         callback: (res) => {
             let jsonObj = JSON.parse(res);
-            input_one.value = jsonObj.word_one;
-            input_two.value = jsonObj.word_two;
-            input_three.value = jsonObj.max_num;
-            input_four.value = jsonObj.id;
+            input_one.value = jsonObj.wordOne;
+            input_two.value = jsonObj.wordTwo;
+            input_three.value = jsonObj.maxNum;
+            input_four.value = jsonObj.openId;
 
             input_one.style.setProperty("color", "rgba(255,255,255,.7)");
             input_two.style.setProperty("color", "rgba(255,255,255,.7)");

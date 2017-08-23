@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = function () {
     init();
 }
 
@@ -42,10 +42,13 @@ join_button.addEventListener('click', () => {
             url: 'http://ghan.s1.natapp.link/player/create',
             callback: (res) => {
                 let jsonObj = JSON.parse(res);
-                input_one.value = jsonObj.playerWord;
-                input_two.value = jsonObj.playerNum;
-                input_three.value = jsonObj.roomId;
-
+                if (jsonObj.errorCode != undefined) {
+                    input_one.value = jsonObj.playerWord;
+                    input_two.value = jsonObj.playerNum;
+                    input_three.value = jsonObj.roomId;
+                } else {
+                    input_three.value = jsonObj.errorMsg;
+                }
                 input_one.style.setProperty("color", "rgba(255,255,255,.7)");
                 input_two.style.setProperty("color", "rgba(255,255,255,.7)");
                 input_three.style.setProperty("color", "rgba(255,255,255,.7)");

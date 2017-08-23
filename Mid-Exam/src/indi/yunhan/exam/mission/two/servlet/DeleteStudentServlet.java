@@ -1,7 +1,6 @@
 package indi.yunhan.exam.mission.two.servlet;
 
 import indi.yunhan.exam.mission.common.ServletDataHandle;
-import indi.yunhan.exam.mission.one.service.ReSetPsdService;
 import indi.yunhan.exam.mission.two.service.DeleteStudentService;
 
 import javax.servlet.ServletException;

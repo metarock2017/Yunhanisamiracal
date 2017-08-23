@@ -15,6 +15,7 @@
       <root url="jar://$PROJECT_DIR$/../../SampleCode/SampleCode/Java/commons-codec-1.9.jar!/" />
       <root url="jar://$PROJECT_DIR$/../../SampleCode/SampleCode/Java/aes-jre1.6.jar!/" />
       <root url="jar://J:/freemarker-2.3.26-incubating.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/mysql-connector-java-5.1.42/mysql-connector-java-5.1.42-bin.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
