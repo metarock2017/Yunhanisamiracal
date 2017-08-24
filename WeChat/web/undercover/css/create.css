@@ -1,6 +1,5 @@
 html,
-body
-{
+body {
     font-family: '微软雅黑';
     font-size: 100%;
     font-weight: 300;
@@ -16,8 +15,7 @@ body
     text-decoration: none;
 }
 ul,
-li
-{
+li {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -25,23 +23,22 @@ li
 
     list-style: none;
 }
+
 html,
-body
-{
+body {
     background-color: #353637;
 }
 
 div,
 ul,
 li,
-input
-{
+input {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-input
-{
+
+input {
     font-size: 14px;
     line-height: 40px;
 
@@ -52,87 +49,84 @@ input
     text-align: center;
     letter-spacing: 2px;
 
-    color: rgba(255,255,255,.4);
-    border: 1px solid rgba(0,0,0,.2);
+    color: rgba(255, 255, 255, .4);
+    border: 1px solid rgba(0, 0, 0, .2);
     border-radius: 0;
-    background-color: rgba(255,255,255,.1);
+    background-color: rgba(255, 255, 255, .1);
     box-shadow: none;
 }
-input[type='text']
-{
+
+input[type='text'] {
     -webkit-appearance: none;
 }
-.unique p
-{
+
+.unique p {
     position: relative;
     top: 70px;
 
     opacity: 0;
 }
 
-.unique_input
-{
+.unique_input {
     position: relative;
     top: 70px;
 
     -webkit-transition: opacity .5s;
-         -o-transition: opacity .5s;
-            transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
 
     opacity: 0;
 }
 
-.unique p:nth-child(1)
-{
+.unique p:nth-child(1) {
     -webkit-transition: all .5s .3s;
-         -o-transition: all .5s .3s;
-            transition: all .5s .3s;
-}
-.unique p:nth-child(3)
-{
-    -webkit-transition: all .5s .5s;
-         -o-transition: all .5s .5s;
-            transition: all .5s .5s;
-}
-.unique p:nth-child(5)
-{
-    -webkit-transition: all .5s .7s;
-         -o-transition: all .5s .7s;
-            transition: all .5s .7s;
-}
-.unique p:nth-child(7)
-{
-    -webkit-transition: all .5s .9s;
-         -o-transition: all .5s .9s;
-            transition: all .5s .9s;
-}
-.unique input:nth-child(2)
-{
-    -webkit-transition: all .5s .4s;
-         -o-transition: all .5s .4s;
-            transition: all .5s .4s;
-}
-.unique input:nth-child(4)
-{
-    -webkit-transition: all .5s .6s;
-         -o-transition: all .5s .6s;
-            transition: all .5s .6s;
-}
-.unique input:nth-child(6)
-{
-    -webkit-transition: all .5s .8s;
-         -o-transition: all .5s .8s;
-            transition: all .5s .8s;
-}
-.unique input:nth-child(8)
-{
-    -webkit-transition: all .5s 1s;
-         -o-transition: all .5s 1s;
-            transition: all .5s 1s;
+    -o-transition: all .5s .3s;
+    transition: all .5s .3s;
 }
 
-.create
-{
+.unique p:nth-child(3) {
+    -webkit-transition: all .5s .5s;
+    -o-transition: all .5s .5s;
+    transition: all .5s .5s;
+}
+
+.unique p:nth-child(5) {
+    -webkit-transition: all .5s .7s;
+    -o-transition: all .5s .7s;
+    transition: all .5s .7s;
+}
+
+.unique p:nth-child(7) {
+    -webkit-transition: all .5s .9s;
+    -o-transition: all .5s .9s;
+    transition: all .5s .9s;
+}
+
+.unique input:nth-child(2) {
+    -webkit-transition: all .5s .4s;
+    -o-transition: all .5s .4s;
+    transition: all .5s .4s;
+}
+
+.unique input:nth-child(4) {
+    -webkit-transition: all .5s .6s;
+    -o-transition: all .5s .6s;
+    transition: all .5s .6s;
+}
+
+.unique input:nth-child(6) {
+    -webkit-transition: all .5s .8s;
+    -o-transition: all .5s .8s;
+    transition: all .5s .8s;
+}
+
+.unique input:nth-child(8) {
+    -webkit-transition: all .5s 1s;
+    -o-transition: all .5s 1s;
+    transition: all .5s 1s;
+}
+
+.create {
     font-size: 16px;
     font-weight: 300;
 
@@ -144,44 +138,91 @@ input[type='text']
     margin: 30px auto 0 auto;
 
     opacity: 0;
-    color: rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
     border: 1px solid #d73300;
     background-color: #d73300;
 }
-.create_unique
-{
+
+.create_unique {
     -webkit-transition: all .5s 1.2s;
-         -o-transition: all .5s 1.2s;
-            transition: all .5s 1.2s;
+    -o-transition: all .5s 1.2s;
+    transition: all .5s 1.2s;
 }
-.create_quick
-{
+
+.create_quick {
     -webkit-transition: all .5s 1.4s;
-         -o-transition: all .5s 1.4s;
-            transition: all .5s 1.4s;
+    -o-transition: all .5s 1.4s;
+    transition: all .5s 1.4s;
 }
-.nav
+
+.create_change {
+    font-size: 16px;
+    font-weight: 300;
+
+    position: relative;
+    top:-60px;
+    z-index:-1;
+
+    width: 200px;
+    height: 35px;
+    margin: 30px auto 0 auto;
+
+    opacity: 0;
+    color: rgba(255, 255, 255, 1);
+    border: 1px solid #d73300;
+    background-color: #d73300;
+
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+.create_clear
 {
+    font-size: 16px;
+    font-weight: 300;
+
+    position: relative;
+    top:-190px;
+    z-index:-1;
+
+    width: 200px;
+    height: 35px;
+    margin: 30px auto 0 auto;
+
+    opacity: 0;
+    color: rgba(255, 255, 255, 1);
+    border: 1px solid #d73300;
+    background-color: #d73300;
+
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+.nav {
     float: left;
 
     width: 100%;
     height: 50px;
 }
-.type
-{
+
+.type {
     float: left;
     overflow: hidden;
 
     width: 100%;
     height: 50px;
 }
-.type img
-{
+
+.type img {
     width: 30px;
     height: 30px;
 }
-.type li
-{
+
+.type li {
     line-height: 30px;
 
     height: 50px;
@@ -189,14 +230,14 @@ input[type='text']
 
     text-align: right;
 
-    color: rgba(255,255,255,.6);
+    color: rgba(255, 255, 255, .6);
 }
-.type li.menu_button
-{
+
+.type li.menu_button {
     cursor: pointer;
 }
-.banner
-{
+
+.banner {
     position: absolute;
     z-index: -1;
 
@@ -204,8 +245,8 @@ input[type='text']
     height: 100%;
     padding: 5%;
 }
-.info
-{
+
+.info {
     width: 100%;
     height: 100%;
 
@@ -213,8 +254,7 @@ input[type='text']
     background-color: #1d1e1e;
 }
 
-.item
-{
+.item {
     position: relative;
 
     clear: both;
@@ -225,11 +265,12 @@ input[type='text']
     padding-top: 10px;
 
     text-align: center;
+    z-index :1;
 
-    color: rgba(255,255,255,.8);
+    color: rgba(255, 255, 255, .8);
 }
-.item p
-{
+
+.item p {
     font-size: 14px;
 
     height: 14px;

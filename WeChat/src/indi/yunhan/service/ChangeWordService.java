@@ -19,7 +19,13 @@ public class ChangeWordService {
         this.gameRoomRepository = gameRoomRepository;
     }
 
-    public String change(Map<String,String> jsonMap){
-        return "";
+    public String change(String md5, Map<String, String> jsonMap) {
+        int maxNum = -1;
+        if (jsonMap.get("maxNum") != null) {
+            maxNum = Integer.parseInt(jsonMap.get("maxNum"));
+        }
+        String newGameRoom = this.getGameRoomRepository().changeWord(md5, maxNum);
+
+        return newGameRoom;
     }
 }

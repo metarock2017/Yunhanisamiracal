@@ -36,29 +36,32 @@ join_button.addEventListener('click', () => {
         input_two = document.querySelector(".input_two"),
         input_three = document.querySelector(".input_three");
 
-    if (input_three.value !== "") {
-        let ajax = new Ajax({
-            method: 'post',
-            url: 'http://ghan.s1.natapp.link/player/create',
-            callback: (res) => {
-                let jsonObj = JSON.parse(res);
-                if (jsonObj.errorCode != undefined) {
-                    input_one.value = jsonObj.playerWord;
-                    input_two.value = jsonObj.playerNum;
-                    input_three.value = jsonObj.roomId;
-                } else {
-                    input_three.value = jsonObj.errorMsg;
-                }
-                input_one.style.setProperty("color", "rgba(255,255,255,.7)");
-                input_two.style.setProperty("color", "rgba(255,255,255,.7)");
-                input_three.style.setProperty("color", "rgba(255,255,255,.7)");
-            },
-            data: {
-                roomId: input_three.value
+    let ajax = new Ajax({
+        method: 'post',
+        url: 'http://ghan.s1.natapp.link/player/create',
+        callback: (res) => {
+            let jsonObj = JSON.parse(res);
+            if (jsonObj.errorCode == undefined) {
+                input_one.value = jsonObj.playerWord;
+                input_two.value = jsonObj.playerNum;
+                input_three.value = jsonObj.roomId;
+            } else {
+                input_three.value = jsonObj.errorMsg;
             }
-        });
-        ajax.send();
+        },
+        data: {
+            roomId: Math.floor(parseInt(input_three.value)).toString()
+        }
+    });
+    let roomId = parseInt(input_three.value);
+    if (!isNaN(roomId)) {
+        if (roomId < 1000 || roomId>9999) {
+            input_three.value = "你这房间号是在逗我吗"
+        } else {
+            ajax.send();
+        }
     } else {
-        input_three.value = "输入房间号";
+        input_three.value = "输入一个正常的数字呀";
     }
+
 });

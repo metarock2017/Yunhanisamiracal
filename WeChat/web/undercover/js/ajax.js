@@ -18,7 +18,7 @@ Ajax.prototype.send = function (method, url, callback, data) {
                 callback(xhr.responseText);
             }
             else {
-                alert('check log');
+                console.log('check log');
             }
         }
     }

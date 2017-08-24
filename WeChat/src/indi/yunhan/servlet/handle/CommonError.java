@@ -3,7 +3,7 @@ package indi.yunhan.servlet.handle;
 /**
  * Created by asus on 2017/8/22.
  */
-public class CommmonError {
+public class CommonError {
     private String errorCode;
     private String errorMsg;
 
@@ -23,8 +23,15 @@ public class CommmonError {
         this.errorMsg = errorMsg;
     }
 
-    public CommmonError(String errorCode, String errorMsg) {
+    public CommonError(String errorCode, String errorMsg) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
+    }
+    @Override
+    public String toString() {
+        return "{" +
+                "errorCode='" + errorCode + '\'' +
+                ", errorMsg='" + errorMsg + '\'' +
+                '}';
     }
 }

@@ -7,7 +7,6 @@ import indi.yunhan.model.gameroom.TypeAndId;
 import indi.yunhan.model.gameroom.Words;
 import redis.clients.jedis.Jedis;
 
-import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.ResultSet;
@@ -169,31 +168,39 @@ public class GameRoomRepository {
     }
 
     public void clearRoom() {
-        double stamp = System.currentTimeMillis();
-        Set<String> outTimeRoom = jedis.zrangeByScore("roomstamp", 0, stamp - 10.0);
+        double stamp = System.currentTimeMillis() / 1000;
+        Set<String> outTimeRoom = jedis.zrangeByScore("roomstamp", 0, stamp - 300.0);
 
-        jedis.zremrangeByScore("roomstamp", 0, stamp - 10.0);
+        jedis.zremrangeByScore("roomstamp", 0, stamp - 300.0);
 
         for (String roomid : outTimeRoom) {
             jedis.sadd("roomidset", roomid);
         }
     }
 
-    public void setUser(String md5, String type,String openId) {
-        String relation = gson.toJson(new TypeAndId(type,openId));
+    public void clearUserRelation() {
+        double stamp = System.currentTimeMillis() / 1000;
+    }
+
+    public void setUser(String md5, String type, String openId) {
+        String relation = gson.toJson(new TypeAndId(type, openId));
         jedis.hset("user", md5, relation);
     }
 
-    public String getUserType(String md5){
-        TypeAndId relation = gson.fromJson(jedis.hget("user",md5),TypeAndId.class);
+    public String getUserType(String md5) {
+        TypeAndId relation = gson.fromJson(jedis.hget("user", md5), TypeAndId.class);
 
         return relation.getType();
     }
 
-    public String getOpenIdByHost(String md5){
-        TypeAndId relation = gson.fromJson(jedis.hget("user",md5),TypeAndId.class);
+    public String getOpenIdByHost(String md5) {
+        TypeAndId relation = gson.fromJson(jedis.hget("user", md5), TypeAndId.class);
 
-        return relation.getOpenId();
+        if (relation != null) {
+            return relation.getOpenId();
+        } else {
+            return "-1";
+        }
     }
 
     public String createRoom(int maxNum) {
@@ -222,6 +229,7 @@ public class GameRoomRepository {
 
     public void updateRoom(int openId, String roomJson) {
         jedis.hset("rooms", String.valueOf(openId), roomJson);
+        jedis.zadd("roomstamp", System.currentTimeMillis() / 1000, String.valueOf(openId));
     }
 
     public String createRoomUnique(String word_one, String word_two, int max_num) {
@@ -259,30 +267,52 @@ public class GameRoomRepository {
                 return gson.toJson(
                         new GameRoomError(
                                 "-1",
-                                "Room is full")
+                                "房间没位子咯")
                 );
             }
         } else {
             return gson.toJson(
                     new GameRoomError(
                             "-1",
-                            "Room is not exist")
+                            "房间不存在啦")
             );
         }
     }
 
-    public String changeWord(int openId) {
-        return "";
+    public String clearPlayer(int openId) {
+        GameRoom gameRoom = gson.fromJson(getRoom(openId), GameRoom.class);
+        if (gameRoom != null) {
+            gameRoom.setUndercover(0);
+            gameRoom.setNowNum(0);
+
+            String gameRoomJson = gson.toJson(gameRoom);
+            updateRoom(openId, gameRoomJson);
+            return gameRoomJson;
+        }
+        return gson.toJson(nullRoom);
+    }
+
+    public String clearPlayerByMd5(String md5) {
+        int openId = Integer.parseInt(getOpenIdByHost(md5));
+        return clearPlayer(openId);
+    }
+
+    public String changeWord(String md5, int maxNum) {
+        int openId = Integer.parseInt(getOpenIdByHost(md5));
+        GameRoom gameRoom = gson.fromJson(getRoom(openId), GameRoom.class);
+        gameRoom.setWord(getWordNameById(randomInt(1, 216)));
+        if (maxNum != -1) {
+            gameRoom.setMaxNum(maxNum);
+        }
+        String gameRoomJson = gson.toJson(gameRoom);
+        updateRoom(openId, gameRoomJson);
+
+        return gameRoomJson;
     }
 
     public void initRedisRoomNum() {
-        if (jedis.scard("roomidset") > 0) {
-            return;
-        } else {
-            for (int i = 1000; i < 9999; i++) {
-                jedis.sadd("roomidset", String.valueOf(i));
-            }
-            return;
+        for (int i = 1000; i < 9999; i++) {
+            jedis.sadd("roomidset", String.valueOf(i));
         }
     }
 
@@ -304,10 +334,13 @@ public class GameRoomRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        System.out.println(words.size());
         return words;
     }
 
     public Long initWordsSet(Map map) {
+        jedis.hmset("words", map);
         return jedis.hlen("words");
     }
 

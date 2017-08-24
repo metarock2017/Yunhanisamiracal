@@ -5,7 +5,7 @@ import indi.yunhan.Repository.GameRoomRepository;
 /**
  * Created by asus on 2017/8/14.
  */
-public class AddPlayerService {
+public class PlayerService {
     private GameRoomRepository gameRoomRepository = new GameRoomRepository();
 
     public GameRoomRepository getGameRoomRepository() {
@@ -14,5 +14,9 @@ public class AddPlayerService {
 
     public String addPlayer(int roomId) {
         return this.getGameRoomRepository().addPlayer(roomId);
+    }
+
+    public String clearPlayer(String md5){
+        return this.getGameRoomRepository().clearPlayerByMd5(md5);
     }
 }

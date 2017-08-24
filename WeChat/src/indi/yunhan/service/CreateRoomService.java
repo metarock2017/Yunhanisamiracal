@@ -39,6 +39,7 @@ public class CreateRoomService {
                             )
                     )
             );
+            this.getCookie().setMaxAge(300);
             this.getGameRoomRepository().setUser(GameRoomRepository.getMD5(openId + timeStamp), "0", openId);
             return resp;
         } catch (JSONException e) {
@@ -61,7 +62,7 @@ public class CreateRoomService {
         return this.getGameRoomRepository().getOpenIdByHost(md5);
     }
 
-    public String getRoomData(String openId){
+    public String getRoomData(String openId) {
         return this.getGameRoomRepository().getRoom(Integer.parseInt(openId));
     }
 
