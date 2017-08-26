@@ -3,12 +3,12 @@ window.onload = function () {
 }
 
 const init = () => {
-    let p_one = document.querySelector(".p_one"),
+    var p_one = document.querySelector(".p_one"),
         p_two = document.querySelector(".p_two"),
         p_three = document.querySelector(".p_three"),
         p_four = document.querySelector(".p_four");
 
-    let input_one = document.querySelector(".input_one"),
+    var input_one = document.querySelector(".input_one"),
         input_two = document.querySelector(".input_two"),
         input_three = document.querySelector(".input_three"),
         input_four = document.querySelector(".input_four");
@@ -37,23 +37,23 @@ const init = () => {
     document.querySelector(".create_quick").style.setProperty("opacity", "1");
 
 }
-
-let create_unique = document.querySelector('.create_unique'),
+var create_unique = document.querySelector('.create_unique'),
     create_quick = document.querySelector(".create_quick"),
     create_change = document.querySelector(".create_change"),
     create_clear = document.querySelector(".create_clear");
 
-create_quick.addEventListener('click', () => {
-    let input_one = document.querySelector(".input_one"),
+create_quick.onclick = function() {
+    alert("click");
+    var input_one = document.querySelector(".input_one"),
         input_two = document.querySelector(".input_two"),
         input_three = document.querySelector(".input_three"),
         input_four = document.querySelector(".input_four");
 
-    let ajax = new Ajax({
+    var ajax = new Ajax({
         method: 'post',
         url: 'http://ghan.s1.natapp.link/room/create',
         callback: (res) => {
-            let jsonObj = JSON.parse(res);
+            var jsonObj = JSON.parse(res);
             input_one.value = jsonObj.wordOne;
             input_two.value = jsonObj.wordTwo;
             input_three.value = jsonObj.maxNum;
@@ -71,20 +71,20 @@ create_quick.addEventListener('click', () => {
         }
     });
     ajax.send();
-});
+};
 
 
-create_unique.addEventListener('click', () => {
-    let input_one = document.querySelector(".input_one"),
+create_unique.onlick = function() {
+    var input_one = document.querySelector(".input_one"),
         input_two = document.querySelector(".input_two"),
         input_three = document.querySelector(".input_three"),
         input_four = document.querySelector(".input_four");
 
-    let ajax = new Ajax({
+    var ajax = new Ajax({
         method: 'post',
         url: 'http://ghan.s1.natapp.link/room/create',
         callback: (res) => {
-            let jsonObj = JSON.parse(res);
+            var jsonObj = JSON.parse(res);
             input_one.value = jsonObj.wordOne;
             input_two.value = jsonObj.wordTwo;
             input_three.value = jsonObj.maxNum;
@@ -101,7 +101,7 @@ create_unique.addEventListener('click', () => {
             maxNum: Math.floor(parseInt(input_three.value)).toString()
         }
     });
-    let maxNum = parseInt(input_three.value);
+    var maxNum = parseInt(input_three.value);
     if (!isNaN(maxNum)) {
         if (maxNum < 4) {
             input_three.value = "最少四个人嘛";
@@ -113,20 +113,20 @@ create_unique.addEventListener('click', () => {
     } else {
         input_three.value = "输入一个正常的数字呀";
     }
-});
+}
 
-create_change.addEventListener('click', () => {
-    let input_one = document.querySelector(".input_one"),
+create_change.onclick = function() {
+    var input_one = document.querySelector(".input_one"),
         input_two = document.querySelector(".input_two"),
         input_three = document.querySelector(".input_three"),
         input_four = document.querySelector(".input_four");
 
-    let ajax = new Ajax({
+    var ajax = new Ajax({
         method: 'post',
         url: 'http://ghan.s1.natapp.link/room/patch',
         callback: (res) => {
             if (res != null) {
-                let jsonObj = JSON.parse(res);
+                var jsonObj = JSON.parse(res);
                 if (jsonObj.errorCode == 500) {
                     alert(jsonObj.errorMsg);
                     location.reload(true);
@@ -144,7 +144,7 @@ create_change.addEventListener('click', () => {
             maxNum: Math.floor(parseInt(input_three.value)).toString()
         }
     });
-    let maxNum = parseInt(input_three.value);
+    var maxNum = parseInt(input_three.value);
     if (!isNaN(maxNum)) {
         if (maxNum < 4) {
             input_three.value = "最少四个人嘛";
@@ -156,20 +156,20 @@ create_change.addEventListener('click', () => {
     } else {
         input_three.value = "输入一个正常的数字呀";
     }
-});
+};
 
-create_clear.addEventListener('click', () => {
-    let input_one = document.querySelector(".input_one"),
+create_clear.onclick = function(){
+    var input_one = document.querySelector(".input_one"),
         input_two = document.querySelector(".input_two"),
         input_three = document.querySelector(".input_three"),
         input_four = document.querySelector(".input_four");
 
-    let ajax = new Ajax({
+    var ajax = new Ajax({
         method: 'post',
         url: 'http://ghan.s1.natapp.link/room/clear',
         callback: (res) => {
             if (res != null) {
-                let jsonObj = JSON.parse(res);
+                var jsonObj = JSON.parse(res);
                 if (jsonObj.errorCode == 500) {
                     alert(jsonObj.errorMsg);
                     location.reload(true);
@@ -186,4 +186,4 @@ create_clear.addEventListener('click', () => {
         data: {}
     });
     ajax.send();
-});
+};

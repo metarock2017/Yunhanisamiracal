@@ -25,16 +25,30 @@ public class CreateRoomServlet extends HttpServlet {
         Map<String, String> jsonMap = handle.jsonToMap(json);
         resp.setContentType("application/json;charset=utf-8");
 
+        System.out.println(json);
+
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
+                System.out.println(cookie.getName() + " : " + cookie.getValue());
                 if (cookie.getName().equals("i_h")) {
                     resp.getWriter().print(createRoomService.getRoomData(createRoomService.getOpenIdByHost(cookie.getValue())));
+                }
+                else {
+                    String repdata = createRoomService.createRoom(Integer.parseInt(jsonMap.get("maxNum")));
+                    if (createRoomService.getCookie() != null) {
+                        System.out.println(createRoomService.getCookie().getName() + " : " + createRoomService.getCookie().getValue());
+                        resp.addCookie(createRoomService.getCookie());
+                        resp.getWriter().print(repdata);
+                    } else {
+                        resp.getWriter().print(-1);
+                    }
                 }
             }
         } else {
             String repdata = createRoomService.createRoom(Integer.parseInt(jsonMap.get("maxNum")));
             if (createRoomService.getCookie() != null) {
+                System.out.println(createRoomService.getCookie().getName() + " : " + createRoomService.getCookie().getValue());
                 resp.addCookie(createRoomService.getCookie());
                 resp.getWriter().print(repdata);
             } else {

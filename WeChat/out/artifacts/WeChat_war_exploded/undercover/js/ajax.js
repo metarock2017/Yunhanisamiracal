@@ -24,8 +24,8 @@ Ajax.prototype.send = function (method, url, callback, data) {
     }
     if (method === 'get') {
         if (typeof data === 'object') {
-            let data_send = '?';
-            for (let key in data) {
+            var data_send = '?';
+            for (var key in data) {
                 data_send += key + '=' + data[key];
                 data_send += '&';
             }

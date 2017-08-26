@@ -24,6 +24,7 @@ public class GameRoomRepository {
     private Words nullWord = new Words("-1", "null", "null");
     private GameRoom nullRoom = new GameRoom(-1, "", -1, nullWord);
 
+
 //    private static Set<Integer> rooms = new HashSet<>();
 
     class GameRoomError {
@@ -136,10 +137,18 @@ public class GameRoomRepository {
         }
     }
 
-    public String getPlayer(int playerNum, int openId, String playerWord, boolean isUnderCover) {
-        Player player = new Player(playerNum, openId, playerWord, isUnderCover);
-
-        return gson.toJson(player);
+    public String getPlayer(String md5) {
+        System.out.println("get player ");
+        Player player = gson.fromJson(jedis.hget("players", md5), Player.class);
+        int openId = player.getRoomId();
+        GameRoom gameRoom = gson.fromJson(jedis.hget("rooms", String.valueOf(openId)), GameRoom.class);
+        if (player.getUserChar().equals("卧底")) {
+            player.setPlayerWord(gameRoom.getWordTwo());
+            return gson.toJson(player);
+        } else {
+            player.setPlayerWord(gameRoom.getWordOne());
+            return gson.toJson(player);
+        }
     }
 
     public Words getWordNameById(int id) {
@@ -169,9 +178,9 @@ public class GameRoomRepository {
 
     public void clearRoom() {
         double stamp = System.currentTimeMillis() / 1000;
-        Set<String> outTimeRoom = jedis.zrangeByScore("roomstamp", 0, stamp - 300.0);
+        Set<String> outTimeRoom = jedis.zrangeByScore("roomstamp", 0, stamp - 30.0);
 
-        jedis.zremrangeByScore("roomstamp", 0, stamp - 300.0);
+        jedis.zremrangeByScore("roomstamp", 0, stamp - 30.0);
 
         for (String roomid : outTimeRoom) {
             jedis.sadd("roomidset", roomid);
@@ -220,6 +229,8 @@ public class GameRoomRepository {
             );
             roomData = gson.toJson(gameRoom);
 
+            System.out.println(roomData);
+
             jedis.zadd("roomStamp", System.currentTimeMillis() / 1000, String.valueOf(openId));
             jedis.hset("rooms", String.valueOf(openId), roomData);
 
@@ -244,38 +255,57 @@ public class GameRoomRepository {
             if (!isRoomFull(openId)) {
                 if (undercoverRate(openId) > 70 && !(hasUndercover(openId))) {
                     gameRoom.addUndercover();
-                    updateRoom(openId, gson.toJson(gameRoom));
-                    return gson.toJson(
-                            new Player(
-                                    gameRoom.getNowNum(),
-                                    gameRoom.getOpenId(),
-                                    gameRoom.getWordTwo(), true
-                            )
+                    String roomData = gson.toJson(gameRoom);
+                    System.out.println(roomData);
+                    Player player = new Player(
+                            gameRoom.getNowNum(),
+                            gameRoom.getOpenId(),
+                            gameRoom.getWordTwo(), true
                     );
+                    player.getOpenIds().add(openId);
+                    updateRoom(openId, roomData);
+
+                    System.out.println(gson.toJson(player));
+                    return gson.toJson(player);
                 } else {
                     gameRoom.addCommonPerson();
-                    updateRoom(openId, gson.toJson(gameRoom));
-                    return gson.toJson(
-                            new Player(
-                                    gameRoom.getNowNum(),
-                                    gameRoom.getOpenId(),
-                                    gameRoom.getWordOne(), false
-                            )
+                    Player player = new Player(
+                            gameRoom.getNowNum(),
+                            gameRoom.getOpenId(),
+                            gameRoom.getWordOne(), false
                     );
+                    player.getOpenIds().add(openId);
+                    updateRoom(openId, gson.toJson(gameRoom));
+
+                    System.out.println(gson.toJson(player));
+                    return gson.toJson(player);
                 }
             } else {
                 return gson.toJson(
                         new GameRoomError(
                                 "-1",
-                                "房间没位子咯")
+                                "房间没位子了")
                 );
             }
         } else {
             return gson.toJson(
                     new GameRoomError(
                             "-1",
-                            "房间不存在啦")
+                            "房间不存在")
             );
+        }
+    }
+
+    public void setPlayer(String md5, String playerJson) {
+        jedis.hset("players", md5, playerJson);
+    }
+
+    public boolean hasPlayer(int roomId, String md5) {
+        Player player = gson.fromJson(jedis.hget("players", md5), Player.class);
+        if (player.getOpenIds().contains(roomId)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -307,6 +337,7 @@ public class GameRoomRepository {
         String gameRoomJson = gson.toJson(gameRoom);
         updateRoom(openId, gameRoomJson);
 
+        System.out.println(gameRoomJson);
         return gameRoomJson;
     }
 

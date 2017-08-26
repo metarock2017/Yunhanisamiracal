@@ -28,37 +28,67 @@ public class MessageService {
 
     public String replyMsg(javax.servlet.http.HttpServletRequest request) {
 
-//        InputStream inputStream = null;
-//        try {
-//            inputStream = request.getInputStream();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
+        InputStream inputStream = null;
+        try {
+            inputStream = request.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 //        String timestamp = request.getParameter("timestamp");
 //        String nonce = request.getParameter("nonce");
 //        String msgSignature = request.getParameter("msg_signature");
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder builder = null;
-//
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+            Document document = builder.parse(inputStream);
+            Element element = document.getDocumentElement();
+            NodeList nodeList = element.getChildNodes();
+
+            //731229
+            String msgTemplate = "" +
+                    "<xml>" +
+                    "<ToUserName><![CDATA[%s]]></ToUserName>\n" +
+                    "<FromUserName><![CDATA[%s]]></FromUserName>\n" +
+                    "<CreateTime>%s</CreateTime>\n" +
+                    "<MsgType><![CDATA[text]]></MsgType>\n" +
+                    "<Content><![CDATA[%s]]></Content>\n" +
+                    "</xml>";
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                System.out.println(i + nodeList.item(i).getNodeName());
+            }
+            String resp = String.format(msgTemplate,
+                    nodeList.item(2).getTextContent(),
+                    nodeList.item(0).getTextContent(),
+                    System.currentTimeMillis() / 1000 + "",
+                    "http://ghan.s1.natapp.link/undercover/gameview/create.html");
+            return resp;
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 //        try {
 //            builder = factory.newDocumentBuilder();
 //            Document reqDocument = builder.parse(inputStream);
 //            Element reqRootNode = reqDocument.getDocumentElement();
 //            NodeList allNode = reqRootNode.getChildNodes();
-//
+
 //            String tUserName = allNode.item(1).getTextContent();
 //            String encrypt = allNode.item(3).getTextContent();
 //
 //            String format = "<xml><ToUserName><![CDATA[%s]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
 //            String fromXML = String.format(format, tUserName, encrypt);
 //            String clearText = Encoding.decrypt(msgSignature, timestamp, nonce, fromXML);
-//
-//            /*
-//            * 初始化文本消息对象
-//            * */
-////            System.out.println(clearText);
-////            System.out.println(getTypeOfMsg(clearText));
+
+            /*
+            * 初始化文本消息对象
+            * */
+//            System.out.println(clearText);
+//            System.out.println(getTypeOfMsg(clearText));
 //
 //            if (getTypeOfMsg(clearText).equals("text")) {
 //                TextMessage textMessage = new TextMessage(clearText);
@@ -78,7 +108,7 @@ public class MessageService {
 //            } else {
 //                return null;
 //            }
-
+//
 //        } catch (ParserConfigurationException e) {
 //            e.printStackTrace();
 //        } catch (SAXException e) {
@@ -86,8 +116,9 @@ public class MessageService {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
-        return "error!";
+//
+//        ?
+        return null;
     }
 
     public String getTypeOfMsg(String clearText) {
@@ -114,10 +145,10 @@ public class MessageService {
         return "error";
     }
 
-    public boolean isEncryptMsg(HttpServletRequest request){
+    public boolean isEncryptMsg(HttpServletRequest request) {
         encrypt = request.getParameter("encrypt_type");
         System.out.println(encrypt);
-        if("aes".equals(encrypt)){
+        if ("aes".equals(encrypt)) {
             return true;
         }
         return false;

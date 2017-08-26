@@ -22,8 +22,8 @@ public class IndexServlet extends javax.servlet.http.HttpServlet {
         // 分发请求
         MessageService messageTestService = new MessageService();
         String message = null;
-        message = messageTestService.replyMsg(request);
-        response.getWriter().print(message);
+
+        response.getWriter().print(messageTestService.replyMsg(request));
 
     }
 

@@ -1,5 +1,8 @@
 package indi.yunhan.model.gameroom;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by asus on 2017/8/9.
  */
@@ -14,6 +17,16 @@ public class GameRoom {
     private String wordTwo;
 
     private int undercover;
+
+    private Map<Integer,String> userList = new HashMap<>();
+
+    public Map<Integer, String> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(Map<Integer, String> userList) {
+        this.userList = userList;
+    }
 
     public int getOpenId() {
         return openId;
@@ -110,11 +123,13 @@ public class GameRoom {
         this.setNowNum(now + 1);
         int nowUndercover = this.getUndercover();
         this.setUndercover(nowUndercover + 1);
+        this.getUserList().put(new Integer(this.getNowNum()),"卧底");
     }
 
     public void addCommonPerson() {
         int now = this.getNowNum();
         this.setNowNum(now + 1);
+        this.getUserList().put(new Integer(this.getNowNum()),"平民");
     }
 
     public static void main(String[] args) {

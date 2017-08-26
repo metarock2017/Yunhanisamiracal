@@ -15,6 +15,7 @@ public class ButtonToJson {
         ButtonContainer buttonContainer = new ButtonContainer();
 
         Button undercover = new Button(true,"view","谁是卧底","non");
+        Button test = new Button(false,"click","test","test");
         Button create = new Button(false,"view","创建房间","url","http://ghan.s1.natapp.link/undercover/gameview/create.html");
         Button join = new Button(false,"view","加入游戏","url","http://ghan.s1.natapp.link/undercover/gameview/join.html");
         Button me = new Button(false,"view","小军涵的主页","url","http://www.yunhan.me/");
@@ -24,6 +25,7 @@ public class ButtonToJson {
 
         buttonContainer.add(undercover);
         buttonContainer.add(me);
+        buttonContainer.add(test);
 
 
         String s = gson.toJson(buttonContainer);
